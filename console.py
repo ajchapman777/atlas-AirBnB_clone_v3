@@ -47,12 +47,12 @@ class HBNBCommand(cmd.Cmd):
                     try:
                         value = int(value)
                     except Exception:
-    try:
-        value = float(value)
-    except Exception:
-        continue
-    new_dict[key] = value
-        return new_dict
+                        try:
+                            value = float(value)
+                        except Exception:
+                            continue
+                        new_dict[key] = value
+                        return new_dict
 
     def do_create(self, arg):
         """Creates a new instance of a class"""
@@ -160,6 +160,5 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** class doesn't exist **")
 
-
             if __name__ == '__main__':
-    HBNBCommand().cmdloop()
+                HBNBCommand().cmdloop()
