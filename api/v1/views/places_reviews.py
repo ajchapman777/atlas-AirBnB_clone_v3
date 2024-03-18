@@ -2,7 +2,7 @@
 """Defines API routes for Review objects."""
 
 from flask import jsonify, abort, request
-from models import storage, Review
+from models import storage, Review, Place, User
 from api.v1.views import app_views
 
 
@@ -73,3 +73,4 @@ def update_review(review_id):
             setattr(review, key, value)
     review.save()
     return jsonify(review.to_dict()), 200
+
