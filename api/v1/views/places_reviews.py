@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """Defines API routes for Review objects."""
 
 from flask import jsonify, abort, request
@@ -73,4 +73,3 @@ def update_review(review_id):
             setattr(review, key, value)
     review.save()
     return jsonify(review.to_dict()), 200
-
