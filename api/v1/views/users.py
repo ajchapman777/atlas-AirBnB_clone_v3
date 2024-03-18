@@ -14,7 +14,17 @@ def get_users():
 
 @app_views.route('/users/<user_id>', methods=['GET'])
 def get_user(user_id):
-    """Retrieves a User object."""
+    """Retrieves a User object by its ID.
+
+    Args:
+        user_id (str): The ID of the user to retrieve.
+
+    Returns:
+        JSON: A JSON representation of the user object.
+
+    Raises:
+        404: If no user with the given ID is found.
+    """
     user = storage.get(User, user_id)
     if not user:
         abort(404)
@@ -23,7 +33,17 @@ def get_user(user_id):
 
 @app_views.route('/users/<user_id>', methods=['DELETE'])
 def delete_user(user_id):
-    """Deletes a User object."""
+    """Deletes a User object by its ID.
+
+    Args:
+        user_id (str): The ID of the user to delete.
+
+    Returns:
+        JSON: An empty dictionary.
+
+    Raises:
+        404: If no user with the given ID is found.
+    """
     user = storage.get(User, user_id)
     if not user:
         abort(404)
@@ -34,7 +54,14 @@ def delete_user(user_id):
 
 @app_views.route('/users', methods=['POST'])
 def create_user():
-    """Creates a User."""
+    """Creates a new User object.
+
+    Returns:
+        JSON: A JSON representation of the newly created user object.
+
+    Raises:
+        400: If the request body is not a valid JSON or if required fields are missing.
+    """
     if not request.json:
         abort(400, description="Not a JSON")
     if 'email' not in request.json:
@@ -49,7 +76,18 @@ def create_user():
 
 @app_views.route('/users/<user_id>', methods=['PUT'])
 def update_user(user_id):
-    """Updates a User object."""
+    """Updates a User object by its ID.
+
+    Args:
+        user_id (str): The ID of the user to update.
+
+    Returns:
+        JSON: A JSON representation of the updated user object.
+
+    Raises:
+        404: If no user with the given ID is found.
+        400: If the request body is not a valid JSON.
+    """
     user = storage.get(User, user_id)
     if not user:
         abort(404)
@@ -62,4 +100,3 @@ def update_user(user_id):
             setattr(user, key, value)
     user.save()
     return jsonify(user.to_dict()), 200
-
