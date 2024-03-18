@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """Defines API routes for City objects."""
 
 from flask import jsonify, abort, request
