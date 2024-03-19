@@ -4,7 +4,7 @@ View for Cities
 """
 
 from flask import jsonify, abort, request
-from models import storage, City, State
+from models import storage
 from api.v1.views import app_views
 
 # Retrieve all cities of a state
