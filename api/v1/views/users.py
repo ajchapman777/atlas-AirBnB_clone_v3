@@ -60,7 +60,8 @@ def create_user():
         JSON: A JSON representation of the newly created user object.
 
     Raises:
-        400: If the request body is not a valid JSON or if required fields are missing.
+        400: If the request body is not a valid JSON or if required
+        fields are missing.
     """
     if not request.json:
         abort(400, description="Not a JSON")
