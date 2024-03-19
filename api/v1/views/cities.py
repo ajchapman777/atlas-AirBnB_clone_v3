@@ -5,7 +5,7 @@ Defines routes for cities objects.
 
 from flask import jsonify, abort, request
 from models import storage, City, State
-from api.v1.views.py import app_views
+from api.v1.views import app_views
 
 
 @app_views.route('/states/<state_id>/cities', methods=['GET'])
