@@ -41,7 +41,7 @@ class FileStorage:
         else:
             return len(self.__objects)
 
-        def all(self, cls=None):
+    def all(self, cls=None):
             """returns the dictionary __objects"""
             if cls is not None:
                 new_dict = {}
@@ -74,23 +74,6 @@ class FileStorage:
                 self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
         except Exception:
             pass
-
-    def get(self, cls, id):
-        """
-        Returns the object based on the class and its ID, or None if not found.
-        """
-        if cls and id:
-            getter = f"{cls.__name__}.{id}"
-            return self.all(cls).get(getter)
-        return None
-
-    def count(self, cls=None):
-        """
-        Returns the number of objects in storage matching the given class.
-        If no class is passed, returns the count of all objects in storage.
-        """
-        if cls is None:
-            return len(self.all(cls))
 
     def delete(self, obj=None):
         """delete obj from __objects if it’s inside"""

@@ -40,27 +40,17 @@ class DBStorage:
         if HBNB_ENV == "test":
             Base.metadata.drop_all(self.__engine)
 
-            def get(self, cls, id):
-                """Retrieve one object by its ID."""
-                return self.__session.query(cls).filter_by(id=id).first()
 
-            def count(self, cls=None):
-                """Count the number of objects in storage."""
-                if cls:
-                    return self.__session.query(cls).count()
-                else:
-                    return sum(self.__session.query(cls).count() for cls in self.__session.classes)
-
-                def all(self, cls=None):
-                    """query on the current database session"""
-                    new_dict = {}
-                    for clss in classes:
-                        if cls is None or cls is classes[clss] or cls is clss:
-                            objs = self.__session.query(classes[clss]).all()
-                            for obj in objs:
-                                key = obj.__class__.__name__ + '.' + obj.id
-                                new_dict[key] = obj
-                                return (new_dict)
+    def all(self, cls=None):
+        """query on the current database session"""
+        new_dict = {}
+        for clss in classes:
+            if cls is None or cls is classes[clss] or cls is clss:
+                objs = self.__session.query(classes[clss]).all()
+                for obj in objs:
+                    key = obj.__class__.__name__ + '.' + obj.id
+                    new_dict[key] = obj
+        return (new_dict)
 
     def new(self, obj):
         """add the object to the current database session"""
