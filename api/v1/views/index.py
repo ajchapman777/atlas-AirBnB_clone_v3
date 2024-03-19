@@ -4,6 +4,8 @@ Module to handle index routes
 """
 from flask import jsonify
 from api.v1.views import app_views
+from models import storage
+
 
 @app_views.route('/status', methods=['GET'])
 def get_stats():
@@ -12,18 +14,21 @@ def get_stats():
     """
     return jsonify({"status": "OK"})
 
-if __name__ == "__main__":
-    pass  # If you need to add additional functionality, you can do it here
 
-
-from api.v1.views import app_views
-from models import storage
-
-@app_views.route('/status')
-def stats():
+@app_views.route('/api/v1/stats', methods=['GET'])
+def get_stats():
     """
-    Route that returns status
+    Retrieve the number of each object by type
     """
+    
+    total_count = storage.count()
+
+
+    counts_by_type = {}
+    for cls in storage.classes():
+        counts_by_type[cls.__name__] = storage.count(cls)
+
     return jsonify({
-       "status": "OK"
-       })
+        'total_count': total_count,
+        'counts_by_type': counts_by_type
+    })
