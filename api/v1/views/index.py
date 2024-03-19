@@ -1,8 +1,11 @@
 #!/usr/bin/python3
 """
-This module contains views for handling server status and retrieving statistics.
+This module contains views for handling
+server status and retrieving statistics.
 
-It provides routes to retrieve the status of the server and statistics about the stored objects.
+It provides routes to retrieve the status
+of the server and statistics about the
+stored objects.
 """
 from flask import jsonify
 from api.v1.views import app_views
