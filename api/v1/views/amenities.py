@@ -2,11 +2,12 @@
 """Defines API routes for Amenity objects."""
 
 from flask import jsonify, abort, request
+from models.amenity import Amenity
 from models import storage, Amenity
 from api.v1.views import app_views
 
 
-@app_views.route('/amenities', methods=['GET'])
+@app_views.route('/amenities', strict_slashes=False)
 def get_all_amenities():
     """Retrieves the list of all Amenity objects."""
     amenities = [
