@@ -76,13 +76,14 @@ class DBStorage:
             self.__session.delete(obj)
 
     def get(self, cls, id):
-        """
-        Returns the object based on the class and its ID, or None if not found.
-        """
+        """Retrieve one object by its ID."""
         if cls and id:
-            getter = f"{cls.__name__}.{id}"
-            return self.all(cls).get(getter)
-        return None
+            o_getter = f"{cls.__name__}.{id}"
+            c_list = self.all(cls)
+            if o_getter in c_list.keys():
+                return c_list[o_getter]
+        else:
+            return None
 
     def count(self, cls=None):
         """
