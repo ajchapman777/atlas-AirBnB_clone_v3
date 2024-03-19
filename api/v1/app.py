@@ -8,8 +8,8 @@ registers the blueprint containing API routes,
 and configures the application to close the
 database connection after each request.
 """
-from flask import Flask, jsonify
 from api.v1.views import app_views
+from flask import Flask, jsonify
 from models import storage
 from os import getenv
 
@@ -26,8 +26,15 @@ def close_db(self):
     storage.close()
 
 
-host = getenv('HBNB_API_HOST', default='0.0.0.0')
-port = getenv('HBNB_API_PORT', default=5000)
+if __name__ == '__main__':
+    try:
+        host = os.environ.get('HBNB_API_HOST')
+    except:
+        host = '0.0.0.0'
 
-if __name__ == "__main__":
-    app.run(host=host, port=port, threaded=True)
+    try:
+        port = os.environ.get('HBNB_API_PORT')
+    except:
+        port = '5000'
+
+    app.run(host=host, port=port)
