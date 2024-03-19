@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Creates cities, etc..
+Defines route for
 """
 
 from flask import jsonify, abort, request
