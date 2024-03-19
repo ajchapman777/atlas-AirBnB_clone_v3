@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-"""Defines API routes for City objects."""
+"""
+View for Cities
+"""
 
 from flask import jsonify, abort, request
 from models import storage, City, State
