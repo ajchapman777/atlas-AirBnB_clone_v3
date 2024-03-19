@@ -3,7 +3,7 @@
 View for Cities
 """
 
-from flask import jsonify, abort, request
+from flask import Flask, abort, jsonify, make_response, request
 from models import storage
 from models.state import State
 from models.city import City
@@ -13,11 +13,11 @@ from api.v1.views import app_views
 # Retrieve all cities of a state
 @app_views.route('/states/<state_id>/cities', methods=['GET'])
 def get_cities_by_state(state_id):
-    state = storage.get(State, state_id)
-    if not state:
+    if state_object is None:
         abort(404)
-        cities = [city.to_dict() for city in state.cities]
-    return jsonify(cities)
+        response = request.get_json(silent=True)
+        if not response:
+            return make_response(jsonify({'error': 'Not a JSON'}))
 
 
 # Retrieve a specific city
