@@ -25,25 +25,25 @@ class FileStorage:
     __objects = {}
 
     def get(self, cls, id):
-    """Retrieve one object by its ID."""
-    return self.__objects.get(cls.__name__ + '.' + id, None)
+        """Retrieve one object by its ID."""
+        return self.__objects.get(cls.__name__ + '.' + id, None)
 
-def count(self, cls=None):
-    """Count the number of objects in storage."""
-    if cls:
-        return len([obj for obj in self.__objects.values() if isinstance(obj, cls)])
-    else:
-        return len(self.__objects)
+    def count(self, cls=None):
+        """Count the number of objects in storage."""
+        if cls:
+            return len([obj for obj in self.__objects.values() if isinstance(obj, cls)])
+        else:
+            return len(self.__objects)
 
-    def all(self, cls=None):
-        """returns the dictionary __objects"""
-        if cls is not None:
-            new_dict = {}
-            for key, value in self.__objects.items():
-                if cls == value.__class__ or cls == value.__class__.__name__:
-                    new_dict[key] = value
-            return new_dict
-        return self.__objects
+        def all(self, cls=None):
+            """returns the dictionary __objects"""
+            if cls is not None:
+                new_dict = {}
+                for key, value in self.__objects.items():
+                    if cls == value.__class__ or cls == value.__class__.__name__:
+                        new_dict[key] = value
+                        return new_dict
+                    return self.__objects
 
     def new(self, obj):
         """sets in __objects the obj with key <obj class name>.id"""
