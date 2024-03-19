@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 """
-Module to handle index routes
+This module contains views for handling server status and retrieving statistics.
+
+It provides routes to retrieve the status of the server and statistics about the stored objects.
 """
 from flask import jsonify
 from api.v1.views import app_views
