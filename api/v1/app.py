@@ -5,10 +5,10 @@ This module initializes the Flask application and sets up routes for the API.
 It creates a Flask application instance, registers the blueprint containing API routes,
 and configures the application to close the database connection after each request.
 """
-from models import storage
+from flask import Flask, jsonify
 from api.v1.views import app_views
+from models import storage
 from os import getenv
-from flask import Flask
 
 
 app = Flask(__name__)
