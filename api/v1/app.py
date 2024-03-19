@@ -1,3 +1,7 @@
+#!/usr/bin/python3
+"""
+API using Flask
+"""
 from models import storage
 from api.v1.views import app_views
 from os import getenv
@@ -9,14 +13,15 @@ app.register_blueprint(app_views)
 
 
 @app.teardown_appcontext
-def close_db(obj):
+def close_db(self):
     """
     Method that calls close
     """
     storage.close()
+    
 
+host = getenv('HBNB_API_HOST', default='0.0.0.0')
+port = getenv('HBNB_API_PORT', default=5000)
+   
 if __name__ == "__main__":
-
-    host = getenv('HBNB_API_HOST', default='0.0.0.0')
-    port = getenv('HBNB_API_PORT', default=5000)
-    """(ADD this with app.run) threaded=True"""
+    app.run(host=host, port=port, threaded=True)
