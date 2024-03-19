@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """Defines API routes for User objects."""
+
 from api.v1.views import app_views
 from flask import jsonify, abort, make_response, request
 from models import storage
