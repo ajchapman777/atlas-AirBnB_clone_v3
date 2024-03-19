@@ -16,11 +16,11 @@ def get_stats():
 
 
 @app_views.route('/api/v1/stats', methods=['GET'])
-def get_stats():
+def stats():
     """
     Retrieve the number of each object by type
     """
-    
+
     total_count = storage.count()
 
 
