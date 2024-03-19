@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-View for Cities
+Defines routes for cities objects.
 """
 
 from flask import jsonify, abort, request
