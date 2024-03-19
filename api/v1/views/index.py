@@ -22,8 +22,6 @@ def stats():
     """
 
     total_count = storage.count()
-
-
     counts_by_type = {}
     for cls in storage.classes():
         counts_by_type[cls.__name__] = storage.count(cls)
