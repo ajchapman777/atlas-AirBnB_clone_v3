@@ -3,7 +3,7 @@
 
 from flask import jsonify, abort, request
 from models.amenity import Amenity
-from models import storage, Amenity
+from models import storage
 from api.v1.views import app_views
 
 
