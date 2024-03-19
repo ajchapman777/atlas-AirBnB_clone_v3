@@ -3,6 +3,7 @@
 Contains the class DBStorage
 """
 
+
 import models
 from models.amenity import Amenity
 from models.base_model import BaseModel, Base
@@ -64,23 +65,6 @@ class DBStorage:
         if obj is not None:
             self.__session.delete(obj)
 
-    def get(self, cls, id):
-        """
-        Returns the object based on the class and its ID, or None if not found.
-        """
-        if cls and id:
-            getter = f"{cls.__name__}.{id}"
-            return self.all(cls).get(getter)
-        return None
-
-    def count(self, cls=None):
-        """
-        Returns the number of objects in storage matching the given class. 
-        If no class is passed, returns the count of all objects in storage.
-        """
-        if cls is None:
-            return len(self.all(cls))
-
     def reload(self):
         """reloads data from the database"""
         Base.metadata.create_all(self.__engine)
@@ -91,3 +75,21 @@ class DBStorage:
     def close(self):
         """call remove() method on the private session attribute"""
         self.__session.remove()
+
+    def get(self, cls, id):
+        """Returns an Object based on name and id"""
+        if cls in classes.values():
+            objs = self.all(cls)
+            for obj in objs.values():
+                if obj.id == id:
+                    return obj
+        return None
+
+    def count(self, cls=None):
+        """Returns a Count of all Stored Objects, or all of specified Class"""
+        objects = []
+        if cls is None:
+            objects = self.all()
+        else:
+            objects = self.all(cls)
+        return len(objects)
