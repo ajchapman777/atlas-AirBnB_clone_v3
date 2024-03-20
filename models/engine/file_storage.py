@@ -42,26 +42,26 @@ class FileStorage:
 
     def save(self):
         """Serializes __objects to the JSON file (path: __file_path)"""
-    json_objects = {}
-    for key in self.__objects:
-        json_objects[key] = self.__objects[key].to_dict()
-    with open(self.__file_path, 'w') as f:
-        json.dump(json_objects, f)
+        json_objects = {}
+        for key in self.__objects:
+            json_objects[key] = self.__objects[key].to_dict()
+        with open(self.__file_path, 'w') as f:
+            json.dump(json_objects, f)
 
-        def reload(self):
-            """Deserializes the JSON file to __objects"""
-            try:
-                with open(self.__file_path, 'r') as f:
-                    jo = json.load(f)
-                    for key in jo:
-                        class_name = jo[key]["__class__"]
-                        self.__objects[key] = classes[class_name](**jo[key])
-            except FileNotFoundError:
-                # Handle the FileNotFoundError
-                pass
-            except Exception as e:
-                # Handle other exceptions
-                print("An error occurred during file reload:", e)
+    def reload(self):
+        """Deserializes the JSON file to __objects"""
+        try:
+            with open(self.__file_path, 'r') as f:
+                jo = json.load(f)
+                for key in jo:
+                    class_name = jo[key]["__class__"]
+                    self.__objects[key] = classes[class_name](**jo[key])
+        except FileNotFoundError:
+            # Handle the FileNotFoundError
+            pass
+        except Exception as e:
+            # Handle other exceptions
+            print("An error occurred during file reload:", e)
 
     def delete(self, obj=None):
         """delete obj from __objects if it's inside"""
