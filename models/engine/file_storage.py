@@ -41,7 +41,7 @@ class FileStorage:
             self.__objects[key] = obj
 
     def save(self):
-    """Serializes __objects to the JSON file (path: __file_path)"""
+        """Serializes __objects to the JSON file (path: __file_path)"""
     json_objects = {}
     for key in self.__objects:
         json_objects[key] = self.__objects[key].to_dict()
@@ -49,7 +49,7 @@ class FileStorage:
         json.dump(json_objects, f)
 
     def reload(self):
-            """Deserializes the JSON file to __objects"""
+        """Deserializes the JSON file to __objects"""
     try:
         with open(self.__file_path, 'r') as f:
             jo = json.load(f)
@@ -62,8 +62,7 @@ class FileStorage:
         # Handle other exceptions
         print("An error occurred during file reload:", e)
 
-
-    def delete(self, obj=None):
+        def delete(self, obj=None):
         """delete obj from __objects if it’s inside"""
         if obj is not None:
             key = obj.__class__.__name__ + '.' + obj.id
