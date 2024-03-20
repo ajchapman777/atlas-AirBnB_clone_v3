@@ -59,9 +59,9 @@ class FileStorage:
             except FileNotFoundError:
                 # Handle the FileNotFoundError
                 pass
-    except Exception as e:
-        # Handle other exceptions
-        print("An error occurred during file reload:", e)
+            except Exception as e:
+                # Handle other exceptions
+                print("An error occurred during file reload:", e)
 
     def delete(self, obj=None):
         """delete obj from __objects if it's inside"""
