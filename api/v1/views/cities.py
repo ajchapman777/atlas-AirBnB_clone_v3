@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-""" Creates the view for all city objects
+"""
+This module creates the view for all city objects
 """
 
 from api.v1.views import app_views
