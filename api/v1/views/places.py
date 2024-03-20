@@ -46,8 +46,6 @@ def place_all(city_id):
     # return jsonify([place.to_dict() for place in city.places])
 
 
-
-
 @app_views.route("/places/<place_id>", methods=['GET'],
                  strict_slashes=False)
 def place_by_id(place_id=None):
@@ -110,5 +108,4 @@ def put_place(place_id):
         if key not in notThese:
             setattr(place, key, value)
     storage.save()
-    return make_response(jsonify(place.to_dict()), 200)
-    
+    return make_response(jsonify(place.to_dict()), 200)    
