@@ -108,4 +108,4 @@ def put_place(place_id):
         if key not in notThese:
             setattr(place, key, value)
     storage.save()
-    return make_response(jsonify(place.to_dict()), 200)    
+    return make_response(jsonify(place.to_dict()), 200)
