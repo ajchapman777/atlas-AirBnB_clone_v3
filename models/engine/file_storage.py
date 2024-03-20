@@ -53,11 +53,11 @@ class FileStorage:
             try:
                 with open(self.__file_path, 'r') as f:
                     jo = json.load(f)
-            for key in jo:
-                self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
-    except FileNotFoundError:
-        # Handle the FileNotFoundError
-        pass
+                    for key in jo:
+                        self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
+            except FileNotFoundError:
+                # Handle the FileNotFoundError
+                pass
     except Exception as e:
         # Handle other exceptions
         print("An error occurred during file reload:", e)
