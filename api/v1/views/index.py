@@ -7,31 +7,35 @@ It provides routes to retrieve the status
 of the server and statistics about the
 stored objects.
 """
+#!/usr/bin/python3
+"""The module conatins the index for the api"""
 from api.v1.views import app_views
 from flask import jsonify
 from models import storage
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
+
+# Here's a dictionary of classes for future use
+classes = {"amenities": Amenity, "cities": City,
+           "places": Place, "reviews": Review, "states": State, "users": User}
 
 
-@app_views.route('/status', methods=['GET'])
-def get_stats():
-    """
-    Returns the status of the server
-    """
+@app_views.route('/status', strict_slashes=False)
+def status():
+    """returns the status of the api"""
     return jsonify({"status": "OK"})
 
 
-@app_views.route('/api/v1/stats', methods=['GET'])
-def stats():
-    """
-    Retrieve the number of each object by type
-    """
-
-    total_count = storage.count()
-    counts_by_type = {}
-    for cls in storage.classes():
-        counts_by_type[cls.__name__] = storage.count(cls)
-
-    return jsonify({
-        'total_count': total_count,
-        'counts_by_type': counts_by_type
-    })
+@app_views.route('/stats', strict_slashes=False, methods=['GET'])
+def get_stats():
+    """returns counts of the different objects"""
+    return_dict = {}
+    for object in classes:
+        # print({object})
+        object_dict = {object: storage.count(classes[object])}
+        return_dict.update(object_dict)
+    return jsonify(return_dict)
