@@ -1,13 +1,4 @@
 #!/usr/bin/python3
-"""
-This module contains views for handling
-server status and retrieving statistics.
-
-It provides routes to retrieve the status
-of the server and statistics about the
-stored objects.
-"""
-#!/usr/bin/python3
 """The module conatins the index for the api"""
 from api.v1.views import app_views
 from flask import jsonify
