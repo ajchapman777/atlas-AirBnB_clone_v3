@@ -83,9 +83,8 @@ def create_city(state_id):
     if not state:
         abort(404)
 
-    city = City()
-    for key, value in json_data.items():
-        setattr(city, key, value)
+    city_data = {k: v for k, v in json_data.items() if k != 'state_id'}
+    city = City(**city_data)
     setattr(city, "state_id", state_id)
     city.save()
     city_json = city.to_dict()
