@@ -46,38 +46,10 @@ class HBNBCommand(cmd.Cmd):
                 else:
                     try:
                         value = int(value)
-                    except Exception:
+                    except ValueError:
                         try:
                             value = float(value)
-                        except Exception:
-                            continue
-                        new_dict[key] = value
-                        return new_dict
-
-    
-    class HBNBCommand(cmd.Cmd):
-    """ HBNH console """
-    prompt = '(hbnb) '
-
-    # Existing methods like do_EOF, emptyline, etc.
-
-    def _key_value_parser(self, args):
-        """creates a dictionary from a list of strings"""
-        new_dict = {}
-        for arg in args:
-            if "=" in arg:
-                kvp = arg.split('=', 1)
-                key = kvp[0]
-                value = kvp[1]
-                if value[0] == value[-1] == '"':
-                    value = shlex.split(value)[0].replace('_', ' ')
-                else:
-                    try:
-                        value = int(value)
-                    except Exception:
-                        try:
-                            value = float(value)
-                        except Exception:
+                        except ValueError:
                             continue
                 new_dict[key] = value
         return new_dict
@@ -89,11 +61,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return False
         if args[0] in classes:
-            new_dict = self._key_value_parser(args[1:])  # Parse key-value pairs
-            if new_dict is None:
-                print("** invalid arguments **")
-                return False
-            instance = classes[args[0]](**new_dict)  # Pass key-value pairs to constructor
+            new_dict = self._key_value_parser(args[1:])
+            instance = classes[args[0]](**new_dict)
         else:
             print("** class doesn't exist **")
             return False
@@ -171,12 +140,12 @@ class HBNBCommand(cmd.Cmd):
                                 if args[2] in integers:
                                     try:
                                         args[3] = int(args[3])
-                                    except Exception:
+                                    except ValueError:
                                         args[3] = 0
                                 elif args[2] in floats:
                                     try:
                                         args[3] = float(args[3])
-                                    except Exception:
+                                    except ValueError:
                                         args[3] = 0.0
                             setattr(models.storage.all()[k], args[2], args[3])
                             models.storage.all()[k].save()
@@ -191,5 +160,6 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** class doesn't exist **")
 
-            if __name__ == '__main__':
-                HBNBCommand().cmdloop()
+
+if __name__ == '__main__':
+    HBNBCommand().cmdloop()
