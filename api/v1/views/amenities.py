@@ -9,6 +9,7 @@ from flask import Flask, abort, jsonify, request
 from models import storage
 from models.amenity import Amenity
 
+
 @app_views.route("/amenities", methods=["GET"], strict_slashes=False)
 def get_amenities():
     """
@@ -21,7 +22,9 @@ def get_amenities():
         amenities.append(amenity.to_dict())
     return jsonify(amenities)
 
-@app_views.route("/amenities/<amenity_id>", methods=["GET"], strict_slashes=False)
+
+@app_views.route("/amenities/<amenity_id>", methods=["GET"],
+                 strict_slashes=False)
 def get_amenity(amenity_id):
     """
     This method retrieves one amenity object
@@ -35,7 +38,9 @@ def get_amenity(amenity_id):
     amenity_json = amenity.to_dict()
     return jsonify(amenity_json)
 
-@app_views.route("/amenities/<amenity_id>", methods=["DELETE"], strict_slashes=False)
+
+@app_views.route("/amenities/<amenity_id>", methods=["DELETE"],
+                 strict_slashes=False)
 def delete_amenity(amenity_id):
     """
     This method deletes an amenity object
@@ -49,7 +54,9 @@ def delete_amenity(amenity_id):
     storage.save()
     return jsonify({}), 200  # OK
 
-@app_views.route("/amenities", methods=["POST"], strict_slashes=False)
+
+@app_views.route("/amenities", methods=["POST"],
+                 strict_slashes=False)
 def create_amenity():
     """
     This method creates an amenity object
@@ -59,17 +66,18 @@ def create_amenity():
     Return: json representation of dictionary
     """
     json_data = request.get_json(silent=True)
-    if json_data is None:
+    if not json_data:
         abort(400, "Not a JSON")  # Bad request
     if "name" not in json_data:
         abort(400, "Missing name")  # Bad request
-    
     amenity = Amenity(**json_data)
     amenity.save()
     amenity_json = amenity.to_dict()
     return jsonify(amenity_json), 201
 
-@app_views.route("/amenities/<amenity_id>", methods=["PUT"], strict_slashes=False)
+
+@app_views.route("/amenities/<amenity_id>", methods=["PUT"],
+                 strict_slashes=False)
 def update_amenity(amenity_id):
     """
     This method updates an amenity object
