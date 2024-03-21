@@ -1,112 +1,102 @@
 #!/usr/bin/python3
 """
-This module creates the view for all city objects
+This module contains a function to execute console commands
 """
 
-from api.v1.views import app_views
-from flask import Flask, abort, jsonify, request
+import sys
+import cmd
 from models import storage
+from models.base_model import BaseModel
+from models.amenity import Amenity
 from models.city import City
+from models.place import Place
+from models.review import Review
 from models.state import State
+from models.user import User
 
 
-@app_views.route(
-        "/states/<state_id>/cities", methods=["GET"], strict_slashes=False)
-def get_cities(state_id):
+classes = {
+    "BaseModel": BaseModel,
+    "User": User,
+    "State": State,
+    "City": City,
+    "Amenity": Amenity,
+    "Place": Place,
+    "Review": Review
+}
+
+
+def exec_command(console, the_command):
     """
-    This method retrieves a list of all cities in one state
-    Args: cities - contains a list all cities in one state
-          state - contains one state object
-    Return: a list dictionaries with cities and
+    This function executes console commands
+    Args: console - an instance of a HBNBCommand class
+          the_command - a command to execute
     """
-    state = storage.get(State, state_id)
-    if not state:
-        abort(404)
-    cities = state.cities
-    cities_list = []
-    for city in cities:
-        cities_list.append(city.to_dict())
-    return jsonify(cities_list)
+    new_dict = None
+    if the_command.startswith("create"):
+        new_dict = {}
+        args = the_command.split()
+        if len(args) < 2:
+            print("** class name missing **")
+            return
+        class_name = args[1]
+        if class_name not in classes:
+            print("** class doesn't exist **")
+            return
+        if len(args) == 2:
+            print("** instance id missing **")
+            return
+        if len(args) >= 3:
+            args.remove(class_name)
+            args.remove("create")
+            args_str = " ".join(args)
+            k_v_pairs = args_str.split(",")
+            for pair in k_v_pairs:
+                key_value = pair.split("=")
+                key = key_value[0]
+                value = key_value[1]
+                value = value.strip(' "')
+                try:
+                    value = eval(value)
+                except:
+                    pass
+                new_dict[key] = value
+        if not new_dict:
+            print("** attribute name missing **")
+            return
+        if class_name not in classes:
+            print("** class doesn't exist **")
+            return
+        instance = classes[class_name](**new_dict)
+        instance.save()
+        print(instance.id)
 
 
-@app_views.route(
-        "/cities/<city_id>", methods=["GET"], strict_slashes=False)
-def get_city(city_id):
+class HBNBCommand(cmd.Cmd):
     """
-    This method retrieves one city object
-    Args: city - contains one city object, based on its city id
-          city_json - city object converted to a dictionary
-    Return: a json dictionary containing one city object
+    This class creates a command line interpreter
     """
-    city = storage.get(City, city_id)
-    if not city:
-        abort(404)  # Bad request
-    city_json = city.to_dict()
-    return jsonify(city_json)
+
+    prompt = "(hbnb) "
+
+    def do_EOF(self, line):
+        """This function exits the program"""
+        return True
+
+    def do_quit(self, line):
+        """This function quits the program"""
+        return True
+
+    def emptyline(self):
+        """This function does nothing"""
+        pass
+
+    def do_create(self, line):
+        """
+        This function creates a new instance of a class
+        """
+        exec_command(self, line)
 
 
-@app_views.route(
-        "/cities/<city_id>", methods=["DELETE"], strict_slashes=False)
-def delete_city(city_id):
-    """
-    This method deletes a city object
-    Args: city - contains one city object, based on its city id
-    Return: an empty dictionary
-    """
-    city = storage.get(City, city_id)
-    if not city:
-        abort(404)  # Bad request
-    storage.delete(city)
-    storage.save()
-    return jsonify({}), 200  # OK
-
-
-@app_views.route(
-        "/states/<state_id>/cities", methods=["POST"], strict_slashes=False)
-def create_city(state_id):
-    """
-    This method creates a city object
-    Args: state - contains a state object
-          city - contains an HTTP body request to a city object
-          json_data - holds the json data request
-          city_json - holds the dictionary representation of city
-    Return:
-    """
-    state = storage.get(State, state_id)
-    json_data = request.get_json(silent=True)
-    if not json_data:
-        print("here")
-        abort(400, "Not a JSON")  # Bad request
-    if "name" not in json_data:
-        abort(400, "Missing name")  # Bad request
-    if not state:
-        abort(404)
-
-    city = City(**json_data)
-    setattr(city, "state_id", state_id)
-    city.save()
-    city_json = city.to_dict()
-    return jsonify(city_json), 201  # OK
-
-
-@app_views.route("/cities/<city_id>", methods=["PUT"], strict_slashes=False)
-def update_city(city_id):
-    """
-    This method updates a city object
-    Args: json_data - holds the json data request
-          city - contains one city object
-          city_json - holds the dictionary representation
-    Return:
-    """
-    json_data = request.get_json(silent=True)
-    city = storage.get(City, city_id)
-    if not city:
-        abort(404)
-    if not json_data:
-        abort(400, "Not a JSON")
-    for key, value in json_data.items():
-        if key not in ["id", "state_id", "created_at", "updated_at"]:
-            setattr(city, key, value)
-    storage.save()
-    city_json = city.to_dict()
-    return jsonify(city_json)
+if __name__ == '__main__':
+    HBNBCommand().cmdloop()
