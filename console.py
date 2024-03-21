@@ -54,6 +54,34 @@ class HBNBCommand(cmd.Cmd):
                         new_dict[key] = value
                         return new_dict
 
+    
+    class HBNBCommand(cmd.Cmd):
+    """ HBNH console """
+    prompt = '(hbnb) '
+
+    # Existing methods like do_EOF, emptyline, etc.
+
+    def _key_value_parser(self, args):
+        """creates a dictionary from a list of strings"""
+        new_dict = {}
+        for arg in args:
+            if "=" in arg:
+                kvp = arg.split('=', 1)
+                key = kvp[0]
+                value = kvp[1]
+                if value[0] == value[-1] == '"':
+                    value = shlex.split(value)[0].replace('_', ' ')
+                else:
+                    try:
+                        value = int(value)
+                    except Exception:
+                        try:
+                            value = float(value)
+                        except Exception:
+                            continue
+                new_dict[key] = value
+        return new_dict
+
     def do_create(self, arg):
         """Creates a new instance of a class"""
         args = arg.split()
@@ -61,8 +89,11 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return False
         if args[0] in classes:
-            new_dict = self._key_value_parser(args[1:])
-            instance = classes[args[0]](**new_dict)
+            new_dict = self._key_value_parser(args[1:])  # Parse key-value pairs
+            if new_dict is None:
+                print("** invalid arguments **")
+                return False
+            instance = classes[args[0]](**new_dict)  # Pass key-value pairs to constructor
         else:
             print("** class doesn't exist **")
             return False
